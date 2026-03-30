@@ -1,16 +1,19 @@
 from pydantic import BaseModel, Field
 from datetime import datetime as dati
+from typing import Annotated, Optional
 
 
 class CommentUpdate(BaseModel):
-    text: str = Field(default=None)
+    text: Annotated[Optional[str], Field(default=None, min_length=1, max_length=1000)]
+
 
 class CommentCreate(CommentUpdate):
-    post_id: int
-    author_id: int
+    post_id: Annotated[int, Field(ge=1)]
+    author_id: Annotated[int, Field(ge=1)]
+
 
 class CommentOut(CommentCreate):
-    id: int
+    id: Annotated[int, Field(ge=1)]
     created_at: dati
 
     class Config:
